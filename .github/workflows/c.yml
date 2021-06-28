@@ -13,8 +13,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-#     - name: configure
-#      run: ./configure
+    - name: prereqs
+      run: sudo apt install libssl-dev libcurl4 libcurl4-openssl-dev libsodium-dev libzmq3-dev libczmq-dev libhiredis-dev
+
+#   - name: configure
+#     run: ./configure
     - name: make
       run: make
 #     - name: make check
