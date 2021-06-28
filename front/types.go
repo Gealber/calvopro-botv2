@@ -30,11 +30,6 @@ func newBotLogger() *BotLogger {
 	return &BotLogger{Logger: logger, Level: LevelInfo}
 }
 
-//SetLevel of logging
-func (log BotLogger) SetLevel(level Level) {
-	log.Level = level
-}
-
 //Println ...
 func (log BotLogger) Println(v ...interface{}) {
 	switch log.Level {
