@@ -136,11 +136,11 @@ func handleQuery(bot *tgbotapi.BotAPI, update tgbotapi.Update, rdsRepo *redisRep
 
 	vidByte := scrapper.Serialize(infoVideos)
 	//storing info in redis, for later use
-	rdsRepo.Set(strconv.Itoa(message.MessageID), string(vidByte), 27*time.Minute)
+	rdsRepo.Set(strconv.Itoa(message.MessageID), string(vidByte), 52*time.Minute)
 	//for caching query result,
 	//in case someone make the same query
 	//I'm not going to scrape again
-	rdsRepo.Set(query, string(vidByte), 27*time.Minute)
+	rdsRepo.Set(query, string(vidByte), 52*time.Minute)
 }
 
 //handleCommand incomming commands
