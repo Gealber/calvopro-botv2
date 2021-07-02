@@ -6,6 +6,7 @@ import "time"
 type UserRepo interface {
 	Create(string) error
 	Find(string) error
+	AddAttempts(string) error
 }
 
 //RedisUserRepo ...
@@ -24,6 +25,7 @@ func IsAuthorized(username string, repo UserRepo, rds RedisUserRepo) bool {
 	//check if user is in db
 	err := repo.Find(username)
 	if err != nil {
+        _ = repo.AddAttempts(username)
 		return false
 	}
 

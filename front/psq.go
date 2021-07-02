@@ -55,6 +55,31 @@ func (repo *postgreRepo) Create(username string) error {
 	return err
 }
 
+//Delete a user in DB
+func (repo *postgreRepo) Delete(username string) error {
+	_, err := repo.db.Exec(context.Background(), "DELETE FROM users WHERE username = $1", username)
+	return err
+}
+
+//UpdateSessions update the ammount of sessions of a user
+func (repo *postgreRepo) UpdateSessions(username string) error {
+	_, err := repo.db.Exec(context.Background(), "UPDATE users SET sessions = sessions + 1 WHERE username = $1", username)
+	return err
+}
+
+//Register attempts
+func (repo *postgreRepo) AddAttempts(username string) error {
+	_, err := repo.db.Exec(context.Background(), "INSERT INTO attempts(username, times) values($1, 1)", username)
+	return err
+}
+
+//UpdateTimes update the ammount of times a non authorized user try to in
+func (repo *postgreRepo) UpdateTimes(username string) error {
+	_, err := repo.db.Exec(context.Background(), "UPDATE attempts SET times = times + 1 WHERE username = $1", username)
+	return err
+}
+
+
 //Find user in DB
 func (repo *postgreRepo) Find(username string) error {
 	err := repo.db.QueryRow(context.Background(), "SELECT username FROM users WHERE username=$1", username).Scan(nil)
