@@ -1,5 +1,7 @@
 package front
 
+import "time"
+
 //Level is the logging level
 type Level int
 
@@ -35,4 +37,6 @@ or /actress stoya to download an album, this may be no so accurate 🤐🤐`
 	TASK_QUEUE = "tasks"
 
     MAX_DOWNLOAD = 3
+
+    SESSION_EXP = 52*time.Minute 
 )

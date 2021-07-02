@@ -7,6 +7,7 @@ type UserRepo interface {
 	Create(string) error
 	Find(string) error
 	AddAttempts(string) error
+	UpdateSessions(string) error
 }
 
 //RedisUserRepo ...
@@ -31,10 +32,12 @@ func IsAuthorized(username string, repo UserRepo, rds RedisUserRepo) bool {
 
     //how many sessions have an user
     //to know the biggest dog
+    //ignoring error, I just don't care
+    _ = repo.UpdateSessions(username)
 
 	//setting user as logged to avoid unnecessary
 	//hits on DB
-	rds.Set(username, "true", 27*time.Minute)
+	rds.Set(username, "true", SESSION_EXP)
 	return true
 }
 

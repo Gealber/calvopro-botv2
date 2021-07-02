@@ -6,7 +6,6 @@ import (
 	"os"
 	"strconv"
 	"strings"
-	"time"
 
 	"github.com/Gealber/calvopro-botv2/scrapper"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
@@ -136,11 +135,11 @@ func handleQuery(bot *tgbotapi.BotAPI, update tgbotapi.Update, rdsRepo *redisRep
 
 	vidByte := scrapper.Serialize(infoVideos)
 	//storing info in redis, for later use
-	rdsRepo.Set(strconv.Itoa(message.MessageID), string(vidByte), 52*time.Minute)
+	rdsRepo.Set(strconv.Itoa(message.MessageID), string(vidByte), SESSION_EXP)
 	//for caching query result,
 	//in case someone make the same query
 	//I'm not going to scrape again
-	rdsRepo.Set(query, string(vidByte), 52*time.Minute)
+	rdsRepo.Set(query, string(vidByte), SESSION_EXP)
 }
 
 //handleCommand incomming commands
