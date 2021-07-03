@@ -7,6 +7,7 @@ type UserRepo interface {
 	Create(string) error
 	Find(string) error
 	AddAttempts(string) error
+	UpdateTimes(string) error
 	UpdateSessions(string) error
 }
 
