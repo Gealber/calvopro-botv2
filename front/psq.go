@@ -9,6 +9,7 @@ import (
 	"github.com/jackc/pgx/v4/log/log15adapter"
 	"github.com/jackc/pgx/v4/pgxpool"
 	log "gopkg.in/inconshreveable/log15.v2"
+	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 )
 
 var (
@@ -68,8 +69,8 @@ func (repo *postgreRepo) UpdateSessions(username string) error {
 }
 
 //Register attempts
-func (repo *postgreRepo) AddAttempts(username string) error {
-	_, err := repo.db.Exec(context.Background(), "INSERT INTO attempts(username, times) values($1, 1)", username)
+func (repo *postgreRepo) AddAttempts(user *tgbotapi.User) error {
+	_, err := repo.db.Exec(context.Background(), "INSERT INTO attempts(firstname, username, times) values($1, $2, 1)", user.FirstName, user.UserName)
 	return err
 }
 

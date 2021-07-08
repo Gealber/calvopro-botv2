@@ -1,12 +1,15 @@
 package front
 
-import "time"
+import (
+    "time"
+	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
+)
 
 //UserRepo ...
 type UserRepo interface {
 	Create(string) error
 	Find(string) error
-	AddAttempts(string) error
+	AddAttempts(*tgbotapi.User) error
 	UpdateTimes(string) error
 	UpdateSessions(string) error
 }
@@ -18,27 +21,27 @@ type RedisUserRepo interface {
 }
 
 //IsAuthorized check if given user is authorized
-func IsAuthorized(username string, repo UserRepo, rds RedisUserRepo) bool {
+func IsAuthorized(user *tgbotapi.User, repo UserRepo, rds RedisUserRepo) bool {
 	//check if user is in cache
-	if len(rds.Get(username)) > 0 {
+	if len(rds.Get(user.UserName)) > 0 {
 		return true
 	}
 
 	//check if user is in db
-	err := repo.Find(username)
+	err := repo.Find(user.UserName)
 	if err != nil {
-        _ = repo.AddAttempts(username)
+        _ = repo.AddAttempts(user)
 		return false
 	}
 
     //how many sessions have an user
     //to know the biggest dog
     //ignoring error, I just don't care
-    _ = repo.UpdateSessions(username)
+    _ = repo.UpdateSessions(user.UserName)
 
 	//setting user as logged to avoid unnecessary
 	//hits on DB
-	rds.Set(username, "true", SESSION_EXP)
+	rds.Set(user.UserName, "true", SESSION_EXP)
 	return true
 }
 

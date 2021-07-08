@@ -87,8 +87,8 @@ func handleUpdates(bot *tgbotapi.BotAPI, update tgbotapi.Update, repos *Repos, t
 			handleCommand(bot, update, repos.psq)
             return
 		}
-		username := update.Message.From.UserName
-		if IsAuthorized(username, repos.psq, repos.rds) {
+		user := update.Message.From
+		if IsAuthorized(user, repos.psq, repos.rds) {
 			handleQuery(bot, update, repos.rds)
             return
 		}
