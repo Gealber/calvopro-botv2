@@ -330,6 +330,7 @@ func infoFromUpdate(bot *tgbotapi.BotAPI, update tgbotapi.Update, rdsRepo *redis
 		return nil
 	}
 	imageURL := uploadToCloud(video.ImageURL)
+    log.Info("ImageURL: ", imageURL, "info")
     return newTaskWorker(url, imageURL, genName(), chatID)
 }
 
