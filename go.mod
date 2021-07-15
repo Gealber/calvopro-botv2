@@ -9,7 +9,7 @@ require (
 	github.com/PuerkitoBio/goquery v1.7.0 // indirect
 	github.com/antchfx/htmlquery v1.2.3 // indirect
 	github.com/antchfx/xmlquery v1.3.6 // indirect
-	github.com/cloudinary/cloudinary-go v1.1.0 // indirect
+	github.com/cloudinary/cloudinary-go v1.1.0
 	github.com/dchest/safefile v0.0.0-20151022103144-855e8d98f185 // indirect
 	github.com/go-redis/redis/v8 v8.10.0
 	github.com/go-telegram-bot-api/telegram-bot-api v4.6.4+incompatible

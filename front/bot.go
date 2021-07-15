@@ -1,12 +1,16 @@
 package front
 
 import (
+    "context"
 	"encoding/json"
 	"fmt"
 	"os"
 	"strconv"
 	"strings"
 
+
+    "github.com/cloudinary/cloudinary-go"
+    "github.com/cloudinary/cloudinary-go/api/uploader"
 	"github.com/Gealber/calvopro-botv2/scrapper"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	log "gopkg.in/inconshreveable/log15.v2"
@@ -14,6 +18,7 @@ import (
 
 var (
 	TOKEN_API = os.Getenv("TOKEN_TELGRAM_API")
+    CLOUDINARY_URL = os.Getenv("CLOUDINARY_URL")
 )
 
 //Repos repos of DBs
@@ -324,7 +329,28 @@ func infoFromUpdate(bot *tgbotapi.BotAPI, update tgbotapi.Update, rdsRepo *redis
 		log.Warn("Empty URL from video info, this shouldn't happened", "err", "dowbloadVideo")
 		return nil
 	}
-    return newTaskWorker(url, genName(), chatID)
+	imageURL := uploadToCloud(video.ImageURL)
+    return newTaskWorker(url, imageURL, genName(), chatID)
+}
+
+//uploadToCloud upload the image to cloudinary for transformation
+func uploadToCloud(url string) string {
+    var imageURL string
+    ctx := context.Background()
+    cld, _ := cloudinary.NewFromURL(CLOUDINARY_URL)
+    resp, err := cld.Upload.Upload(ctx, url, uploader.UploadParams{
+        Eager: "w_300,h_300,c_scale",
+    })
+    if err != nil {
+        log.Warn("Unable to upload image to Cloudinary", "err", err)
+        return imageURL
+    }
+
+    if len(resp.Eager) > 0 {
+        eager := resp.Eager
+        imageURL = eager[0].SecureURL
+    }
+    return imageURL
 }
 
 //downloadVideo when the callback is the Download button

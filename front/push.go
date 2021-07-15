@@ -29,7 +29,7 @@ func getHash(key string) uint32 {
 
 type TaskWorker struct {
 	URL string
-	//WorkerID int
+    ImageURL string
 	ChatID  int64
 	Title   string
 	HashKey string
@@ -39,6 +39,7 @@ type TaskWorker struct {
 //ZeroMQ sockets
 type DataTransfer struct {
 	URL     string `json:"url"`
+    ImageURL string `json:imageurl"`
 	ChatID  string `json:"chatid"`
 	Path    string `json:"path"`
 	HashKey string `json:"hashkey"`
@@ -48,17 +49,18 @@ func newDataTransfer(task *TaskWorker) *DataTransfer {
 	chatID := strconv.FormatInt(task.ChatID, 10)
 	return &DataTransfer{
 		URL:     task.URL,
+        ImageURL: task.ImageURL,
 		ChatID:  chatID,
 		Path:    fmt.Sprintf("%s/%s.mp4", chatID, task.Title),
 		HashKey: task.HashKey,
 	}
 }
 
-func newTaskWorker(url, title string, chatID int64) *TaskWorker {
+func newTaskWorker(url, imageURL, title string, chatID int64) *TaskWorker {
 	hashKey := fmt.Sprintf("%d", getHash(url))
 	return &TaskWorker{
 		URL: url,
-		//WorkerID: index,
+        ImageURL: imageURL,
 		ChatID:  chatID,
 		Title:   title,
 		HashKey: hashKey,
