@@ -347,6 +347,7 @@ func uploadToCloud(url string) string {
         return imageURL
     }
 
+    log.Info(fmt.Sprintf("Response: %+v", resp), "info", "resp")
     if len(resp.Eager) > 0 {
         eager := resp.Eager
         imageURL = eager[0].SecureURL
