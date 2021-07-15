@@ -329,8 +329,8 @@ func infoFromUpdate(bot *tgbotapi.BotAPI, update tgbotapi.Update, rdsRepo *redis
 		log.Warn("Empty URL from video info, this shouldn't happened", "err", "dowbloadVideo")
 		return nil
 	}
-	imageURL := uploadToCloud(video.ImageURL)
-    log.Info("ImageURL: ", imageURL, "info")
+	//imageURL := uploadToCloud(video.ImageURL)
+    imageURL := ""
     return newTaskWorker(url, imageURL, genName(), chatID)
 }
 
@@ -347,7 +347,6 @@ func uploadToCloud(url string) string {
         return imageURL
     }
 
-    log.Info(fmt.Sprintf("Response: %+v", resp), "info", "resp")
     if len(resp.Eager) > 0 {
         eager := resp.Eager
         imageURL = eager[0].SecureURL
