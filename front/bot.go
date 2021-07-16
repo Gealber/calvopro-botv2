@@ -329,8 +329,7 @@ func infoFromUpdate(bot *tgbotapi.BotAPI, update tgbotapi.Update, rdsRepo *redis
 		log.Warn("Empty URL from video info, this shouldn't happened", "err", "dowbloadVideo")
 		return nil
 	}
-	//imageURL := uploadToCloud(video.ImageURL)
-    imageURL := ""
+	imageURL := uploadToCloud(video.ImageURL)
     return newTaskWorker(url, imageURL, genName(), chatID)
 }
 
