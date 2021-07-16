@@ -39,7 +39,7 @@ type TaskWorker struct {
 //ZeroMQ sockets
 type DataTransfer struct {
 	URL     string `json:"url"`
-    ImageURL string `json:imageurl"`
+    ImageURL string `json:"imageurl"`
 	ChatID  string `json:"chatid"`
 	Path    string `json:"path"`
 	HashKey string `json:"hashkey"`
