@@ -292,7 +292,8 @@ func sendVideoInfo( bot *tgbotapi.BotAPI, requestMD *RequestMD, video *scrapper.
 func infoFromUpdate(bot *tgbotapi.BotAPI, update tgbotapi.Update, rdsRepo *redisRepo) *TaskWorker {
 	chatID := update.CallbackQuery.Message.Chat.ID
     //checking if user can put download another video
-    countStr := rdsRepo.Get(strconv.FormatInt(chatID, 10))
+    chatIDStr := strconv.FormatInt(chatID, 10)
+    countStr := rdsRepo.Get(chatIDStr)
     count, err := strconv.ParseInt(countStr, 10, 64)
     if err != nil {
 		log.Crit("counter is not int", "err", "infoFromUpdate")
@@ -302,6 +303,10 @@ func infoFromUpdate(bot *tgbotapi.BotAPI, update tgbotapi.Update, rdsRepo *redis
 		text := "Wait until other downloads finish, we are poor..."
 		sendMsg(bot, chatID, text)
 		return nil
+    }
+    if count == 0 {
+        //set expiration for the key
+        rdsRepo.Set(chatIDStr, "0", SESSION_EXP)
     }
 
 	data := strings.Split(update.CallbackQuery.Data, "-")
