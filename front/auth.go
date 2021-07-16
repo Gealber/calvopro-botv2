@@ -45,6 +45,31 @@ func IsAuthorized(user *tgbotapi.User, repo UserRepo, rds RedisUserRepo) bool {
 	return true
 }
 
+//Register register in case user s not in DB
+func Register(user *tgbotapi.User, repo UserRepo, rds RedisUserRepo) {
+	//check if user is in cache
+	if len(rds.Get(user.UserName)) > 0 {
+		return
+	}
+
+	//check if user is in db
+	err := repo.Find(user.UserName)
+	if err != nil {
+        _ = repo.Create(user.UserName)
+		return
+	}
+
+    //how many sessions have an user
+    //to know the biggest dog
+    //ignoring error, I just don't care
+    _ = repo.UpdateSessions(user.UserName)
+
+	//setting user as logged to avoid unnecessary
+	//hits on DB
+	rds.Set(user.UserName, "true", SESSION_EXP)
+	return
+}
+
 //CreateUser insert a user in DB
 func CreateUser(username string, repo UserRepo) error {
 	return repo.Create(username)

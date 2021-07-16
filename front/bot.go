@@ -93,14 +93,19 @@ func handleUpdates(bot *tgbotapi.BotAPI, update tgbotapi.Update, repos *Repos, t
             return
 		}
 		user := update.Message.From
-		if IsAuthorized(user, repos.psq, repos.rds) {
-			handleQuery(bot, update, repos.rds)
-            return
-		}
-        chatID := update.Message.Chat.ID
-        msg := tgbotapi.NewMessage(chatID, NOT_AUTHORIZED_MSG)
-        bot.Send(msg)
+        //no need for authorization
+        //anyone can use it
+        Register(user, repos.psq, repos.rds)
+		handleQuery(bot, update, repos.rds)
         return
+		//if IsAuthorized(user, repos.psq, repos.rds) {
+		//	handleQuery(bot, update, repos.rds)
+        //    return
+		//}
+        //chatID := update.Message.Chat.ID
+        //msg := tgbotapi.NewMessage(chatID, NOT_AUTHORIZED_MSG)
+        //bot.Send(msg)
+        //return
 	}
 
 	if update.CallbackQuery != nil {
