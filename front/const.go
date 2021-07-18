@@ -14,10 +14,10 @@ stay with us I also warn you that any query related to illegal 😑
 content will result in a banned, so go nasty but not so nasty 😉😏. One last thing,
 please keep this bot secret 🤫🤫🤫.
 Well now type /help to see what this amazing bot can do.`
-	helpText = `type /query {query to request} to download a video 🎞️
-related to that query. For example:/query stoya hard 
+	helpText = `type {query to request} to download a video 🎞️
+related to that query. For example: mia malcova fucked hard 
 /status to see the status of this magic bot
-or /actress stoya to download an album, this may be no so accurate 🤐🤐`
+`
 
 	//Logging Levels
 	//LevelDebug debugging
