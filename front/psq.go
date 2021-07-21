@@ -51,8 +51,8 @@ func (repo *postgreRepo) Connect() {
 }
 
 //Create a user in DB
-func (repo *postgreRepo) Create(username string) error {
-	_, err := repo.db.Exec(context.Background(), "INSERT INTO users(username) values($1)", username)
+func (repo *postgreRepo) Create(username string, chatid int64) error {
+	_, err := repo.db.Exec(context.Background(), "INSERT INTO users(username,chatid) values($1,$2)", username, chatid)
 	return err
 }
 

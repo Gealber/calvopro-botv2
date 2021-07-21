@@ -7,7 +7,7 @@ import (
 
 //UserRepo ...
 type UserRepo interface {
-	Create(string) error
+	Create(string, int64) error
 	Find(string) error
 	AddAttempts(*tgbotapi.User) error
 	UpdateTimes(string) error
@@ -46,7 +46,7 @@ func IsAuthorized(user *tgbotapi.User, repo UserRepo, rds RedisUserRepo) bool {
 }
 
 //Register register in case user s not in DB
-func Register(user *tgbotapi.User, repo UserRepo, rds RedisUserRepo) {
+func Register(user *tgbotapi.User, chatid int64, repo UserRepo, rds RedisUserRepo) {
 	//check if user is in cache
 	if len(rds.Get(user.UserName)) > 0 {
 		return
@@ -55,7 +55,7 @@ func Register(user *tgbotapi.User, repo UserRepo, rds RedisUserRepo) {
 	//check if user is in db
 	err := repo.Find(user.UserName)
 	if err != nil {
-        _ = repo.Create(user.UserName)
+        _ = repo.Create(user.UserName, chatid)
 		return
 	}
 
@@ -71,6 +71,6 @@ func Register(user *tgbotapi.User, repo UserRepo, rds RedisUserRepo) {
 }
 
 //CreateUser insert a user in DB
-func CreateUser(username string, repo UserRepo) error {
-	return repo.Create(username)
+func CreateUser(username string, chatid int64, repo UserRepo) error {
+	return repo.Create(username, chatid)
 }

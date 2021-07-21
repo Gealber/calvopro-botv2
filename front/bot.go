@@ -93,9 +93,10 @@ func handleUpdates(bot *tgbotapi.BotAPI, update tgbotapi.Update, repos *Repos, t
             return
 		}
 		user := update.Message.From
+        chatID := update.Message.Chat.ID
         //no need for authorization
         //anyone can use it
-        Register(user, repos.psq, repos.rds)
+        Register(user, chatID, repos.psq, repos.rds)
 		handleQuery(bot, update, repos.rds)
         return
 		//if IsAuthorized(user, repos.psq, repos.rds) {
@@ -156,11 +157,6 @@ func handleQuery(bot *tgbotapi.BotAPI, update tgbotapi.Update, rdsRepo *redisRep
 func handleCommand(bot *tgbotapi.BotAPI, update tgbotapi.Update, repo *postgreRepo) {
 	msg := tgbotapi.NewMessage(update.Message.Chat.ID, "")
 	switch update.Message.Command() {
-	case "add":
-		userToAdd := update.Message.CommandArguments()
-		userToAdd = strings.TrimPrefix(userToAdd, "@")
-		admin := update.Message.From.UserName
-		msg.Text = addUserCommand(userToAdd, admin, repo)
 	case "help":
 		msg.Text = helpText
 	case "start":
@@ -202,21 +198,6 @@ func isDownloadCallback(update tgbotapi.Update) bool {
 		return true
 	}
 	return false
-}
-
-//addUserCommand
-func addUserCommand(userToAdd, admin string, repo *postgreRepo) string {
-	if userToAdd != "" {
-		if admin == "Gulolio" || admin == "SunShineXS" {
-			err := repo.Create(userToAdd)
-			if err != nil {
-				log.Info("Unable to create user", "err", err)
-			}
-			return "User added"
-		}
-		return "You are not authorized to use this command, smart ass"
-	}
-	return "Provide a user, you moron"
 }
 
 //videoInfo send the message with info of the particular video
