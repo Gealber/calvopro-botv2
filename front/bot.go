@@ -161,6 +161,8 @@ func handleCommand(bot *tgbotapi.BotAPI, update tgbotapi.Update, repo *postgreRe
 		msg.Text = helpText
 	case "start":
 		msg.Text = startText
+	case "donate":
+		msg.Text = donateText
 	case "status":
 		msg.Text = "I'm feeling good! Purum purum purum"
 	default:

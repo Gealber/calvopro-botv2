@@ -18,6 +18,13 @@ Well now type /help to see what this amazing bot can do.`
 related to that query. For example: mia malcova fucked hard 
 /status to see the status of this magic bot
 `
+    donateText = `In case you want to donate to the developer, not the bot, you could use this Nano address:
+nano_39pzkefbtnc4bckuur9por9ix3mau1iofw3atoh3hjcb9ikoi46ybnwhejoi
+
+In case you are not aware of, Nano is a cryptocurrency that allows you to make transactions with 0
+fee and with an average transaction time of less than a second, fast as hell, is like the Rayo McQueen of cryptos.
+These two features make it ideal for donations, you could make a donation small as you want, and still no ridiculus
+fee will be charged to you. The best of all, is that you could adquire it for free, take a look at their website nano.org.`
 
 	//Logging Levels
 	//LevelDebug debugging
