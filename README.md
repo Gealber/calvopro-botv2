@@ -45,6 +45,11 @@ Even these limitations, the bot perform pretty well, thanks to the magic of Gola
 
 Telegram's bots can only send videos with less than **50 mgb**, so this is another reason why is so important to know before hand the size of the video, to avoid its inclusion on the list in case its size is greater than **50 mgb**. This limitation could be avoided, if you deploy your own Telegram bot server, which is possible given that is open source, but I don't have a way to do that, again I'm poor.
 
+### Average time the bot is up
+
+Given that I'm using a free account in Heroku, without a credit card associated to it, I only have 550 hour dyno, which in my expirience
+with the bot, is around 20 days up.
+
 ## Information tracked
 
 The bot just store this information,
