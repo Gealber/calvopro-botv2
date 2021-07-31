@@ -47,7 +47,7 @@ Telegram's bots can only send videos with less than **50 mgb**, so this is anoth
 
 ### Average time the bot is up
 
-Given that I'm using a free account in Heroku, without a credit card associated to it, I only have 550 hour dyno, which in my expirience
+Given that I'm using a free account in Heroku, without a credit card associated to it, I only have 550 hours dyno, which in my experience
 with the bot, is around 20 days up.
 
 ## Information tracked
