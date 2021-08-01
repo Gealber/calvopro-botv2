@@ -17,13 +17,14 @@ Well now type /help to see what this amazing bot can do.`
 	helpText = `type {query to request} to download a video 🎞️
 related to that query. For example: mia malcova fucked hard 
 /status to see the status of this magic bot. 
-/donate in case you want to sene me some money after you are finish, 
+/donate in case you want to send me some money after you are finish, 
 well, better before you finish. You dog😏! 
 
 The average time life of this bot is around 20 days / month, given that we use only 
 free resources for the hosting, I'm not cheap, I'm poor😒.
 `
-    donateText = `In case you want to donate to the developer, not the bot, you could use this Nano address:
+    donateText = `In case you want to donate💰💸 to the developer, not the bot, you could use this 💲Nano address:
+
 nano_39pzkefbtnc4bckuur9por9ix3mau1iofw3atoh3hjcb9ikoi46ybnwhejoi
 
 In case you are not aware of, Nano is a cryptocurrency that allows you to make transactions with 0
