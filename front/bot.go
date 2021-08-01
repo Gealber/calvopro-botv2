@@ -256,7 +256,7 @@ func sendVideoInfo( bot *tgbotapi.BotAPI, requestMD *RequestMD, video *scrapper.
 	photo := tgbotapi.NewPhoto(requestMD.ChatID, file)
 
 	text := fmt.Sprintf(
-		"🎥 Title: %s\n\n🕐 Duration: %s\n\n 💾Size: %dmgb",
+		"🎥 Title: %s\n\n🕐 Duration: %s\n\n 💾Size: %dMB",
 		video.Title,
 		video.Duration,
 		video.Size>>20,

@@ -69,7 +69,7 @@ func InfoVideos(query string) []*Video {
 			}
 		})
 		//filter videos and only add those with size
-		//less than 52428800 bytes (50 mgb)
+		//less than 52428800 bytes (50 MB)
 		go func() {
 			GetVideoURL(video)
 			videosChan <- video

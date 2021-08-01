@@ -43,7 +43,7 @@ Even these limitations, the bot perform pretty well, thanks to the magic of Gola
 
 ### Video size
 
-Telegram's bots can only send videos with less than **50 mgb**, so this is another reason why is so important to know before hand the size of the video, to avoid its inclusion on the list in case its size is greater than **50 mgb**. This limitation could be avoided, if you deploy your own Telegram bot server, which is possible given that is open source, but I don't have a way to do that, again I'm poor.
+Telegram's bots can only send videos with less than **50 MB**, so this is another reason why is so important to know before hand the size of the video, to avoid its inclusion on the list in case its size is greater than **50 MB**. This limitation could be avoided, if you deploy your own Telegram bot server, which is possible given that is open source, but I don't have a way to do that, again I'm poor.
 
 ### Average time the bot is up
 

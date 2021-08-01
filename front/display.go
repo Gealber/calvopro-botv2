@@ -18,7 +18,7 @@ func formListMarkup(videos []*scrapper.Video) tgbotapi.InlineKeyboardMarkup {
 			}
 			return video.Title
 		}()
-		text := fmt.Sprintf("🍆🍑%s... [%d mgb]", title, video.Size >> 20)
+		text := fmt.Sprintf("🍆🍑%s... [%d MB]", title, video.Size >> 20)
 		button := tgbotapi.NewInlineKeyboardButtonData(text, strconv.Itoa(i+1))
 		row := tgbotapi.NewInlineKeyboardRow(button)
 		rows = append(rows, row)
