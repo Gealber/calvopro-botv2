@@ -1,24 +1,23 @@
 package front
 
 import (
-    "context"
+	"context"
 	"encoding/json"
 	"fmt"
 	"os"
 	"strconv"
 	"strings"
 
-
-    "github.com/cloudinary/cloudinary-go"
-    "github.com/cloudinary/cloudinary-go/api/uploader"
 	"github.com/Gealber/calvopro-botv2/scrapper"
+	"github.com/cloudinary/cloudinary-go"
+	"github.com/cloudinary/cloudinary-go/api/uploader"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	log "gopkg.in/inconshreveable/log15.v2"
 )
 
 var (
-	TOKEN_API = os.Getenv("TOKEN_TELGRAM_API")
-    CLOUDINARY_URL = os.Getenv("CLOUDINARY_URL")
+	TOKEN_API      = os.Getenv("TOKEN_TELGRAM_API")
+	CLOUDINARY_URL = os.Getenv("CLOUDINARY_URL")
 )
 
 //Repos repos of DBs
@@ -90,23 +89,23 @@ func handleUpdates(bot *tgbotapi.BotAPI, update tgbotapi.Update, repos *Repos, t
 	if update.Message != nil {
 		if update.Message.IsCommand() {
 			handleCommand(bot, update, repos.psq)
-            return
+			return
 		}
 		user := update.Message.From
-        chatID := update.Message.Chat.ID
-        //no need for authorization
-        //anyone can use it
-        Register(user, chatID, repos.psq, repos.rds)
+		chatID := update.Message.Chat.ID
+		//no need for authorization
+		//anyone can use it
+		Register(user, chatID, repos.psq, repos.rds)
 		handleQuery(bot, update, repos.rds)
-        return
+		return
 		//if IsAuthorized(user, repos.psq, repos.rds) {
 		//	handleQuery(bot, update, repos.rds)
-        //    return
+		//    return
 		//}
-        //chatID := update.Message.Chat.ID
-        //msg := tgbotapi.NewMessage(chatID, NOT_AUTHORIZED_MSG)
-        //bot.Send(msg)
-        //return
+		//chatID := update.Message.Chat.ID
+		//msg := tgbotapi.NewMessage(chatID, NOT_AUTHORIZED_MSG)
+		//bot.Send(msg)
+		//return
 	}
 
 	if update.CallbackQuery != nil {
@@ -213,7 +212,7 @@ func videoInfo(bot *tgbotapi.BotAPI, update tgbotapi.Update, rdsRepo *redisRepo)
 		return
 	}
 	//send information of video
-    requestMD := newRequestMD(chatID, msgID, index)
+	requestMD := newRequestMD(chatID, msgID, index)
 	videoInfoMsg(bot, requestMD, rdsRepo)
 }
 
@@ -246,12 +245,12 @@ func videoInfoMsg(bot *tgbotapi.BotAPI, requestMD *RequestMD, rdsRepo *redisRepo
 		log.Crit("Empty URL supplied", "err", "videoInfoMsg")
 		return
 	}
-    sendVideoInfo(bot, requestMD, video)
+	sendVideoInfo(bot, requestMD, video)
 }
 
 //send the message form in videoInfoMsg
-func sendVideoInfo( bot *tgbotapi.BotAPI, requestMD *RequestMD, video *scrapper.Video) {
-    key := strconv.Itoa(requestMD.MessageID)
+func sendVideoInfo(bot *tgbotapi.BotAPI, requestMD *RequestMD, video *scrapper.Video) {
+	key := strconv.Itoa(requestMD.MessageID)
 	file := tgbotapi.FileURL(video.ImageURL)
 	photo := tgbotapi.NewPhoto(requestMD.ChatID, file)
 
@@ -279,23 +278,23 @@ func sendVideoInfo( bot *tgbotapi.BotAPI, requestMD *RequestMD, video *scrapper.
 //infoFromUpdate extract info from update
 func infoFromUpdate(bot *tgbotapi.BotAPI, update tgbotapi.Update, rdsRepo *redisRepo) *TaskWorker {
 	chatID := update.CallbackQuery.Message.Chat.ID
-    //checking if user can put download another video
-    chatIDStr := strconv.FormatInt(chatID, 10)
-    countStr := rdsRepo.Get(chatIDStr)
-    count, err := strconv.ParseInt(countStr, 10, 64)
-    if err != nil {
+	//checking if user can put download another video
+	chatIDStr := strconv.FormatInt(chatID, 10)
+	countStr := rdsRepo.Get(chatIDStr)
+	count, err := strconv.ParseInt(countStr, 10, 64)
+	if err != nil {
 		log.Crit("counter is not int", "err", "infoFromUpdate")
-        count = 0
-    }
-    if count >= MAX_DOWNLOAD {
+		count = 0
+	}
+	if count >= MAX_DOWNLOAD {
 		text := "Wait until other downloads finish, we are poor..."
 		sendMsg(bot, chatID, text)
 		return nil
-    }
-    if count == 0 {
-        //set expiration for the key
-        rdsRepo.Set(chatIDStr, "0", SESSION_EXP)
-    }
+	}
+	if count == 0 {
+		//set expiration for the key
+		rdsRepo.Set(chatIDStr, "0", SESSION_EXP)
+	}
 
 	data := strings.Split(update.CallbackQuery.Data, "-")
 	if len(data) != 2 {
@@ -323,42 +322,43 @@ func infoFromUpdate(bot *tgbotapi.BotAPI, update tgbotapi.Update, rdsRepo *redis
 		return nil
 	}
 	imageURL := uploadToCloud(video.ImageURL)
-    return newTaskWorker(url, imageURL, genName(), chatID)
+	return newTaskWorker(url, imageURL, genName(), chatID)
 }
 
 //uploadToCloud upload the image to cloudinary for transformation
 func uploadToCloud(url string) string {
-    var imageURL string
-    ctx := context.Background()
-    cld, _ := cloudinary.NewFromURL(CLOUDINARY_URL)
-    resp, err := cld.Upload.Upload(ctx, url, uploader.UploadParams{
-        Eager: "w_300,h_300,c_scale",
-    })
-    if err != nil {
-        log.Warn("Unable to upload image to Cloudinary", "err", err)
-        return imageURL
-    }
+	var imageURL string
+	ctx := context.Background()
+	cld, _ := cloudinary.NewFromURL(CLOUDINARY_URL)
+	resp, err := cld.Upload.Upload(ctx, url, uploader.UploadParams{
+		Eager:  "w_300,h_300,c_scale",
+		Folder: "Bot",
+	})
+	if err != nil {
+		log.Warn("Unable to upload image to Cloudinary", "err", err)
+		return imageURL
+	}
 
-    if len(resp.Eager) > 0 {
-        eager := resp.Eager
-        imageURL = eager[0].SecureURL
-    }
-    return imageURL
+	if len(resp.Eager) > 0 {
+		eager := resp.Eager
+		imageURL = eager[0].SecureURL
+	}
+	return imageURL
 }
 
 //downloadVideo when the callback is the Download button
 func downloadVideo(bot *tgbotapi.BotAPI, update tgbotapi.Update, rdsRepo *redisRepo, tasks chan *TaskWorker) {
 	//dispatching task
 	task := infoFromUpdate(bot, update, rdsRepo)
-    if task == nil {
-        return
-    }
+	if task == nil {
+		return
+	}
 	hashKey := task.HashKey
 	fileID := rdsRepo.Get(hashKey)
 	if len(fileID) > 0 {
 		file := tgbotapi.FileID(fileID)
 		msg := tgbotapi.NewVideo(task.ChatID, file)
-        _, err := bot.Send(msg)
+		_, err := bot.Send(msg)
 		if err != nil {
 			log.Info("Unable to send message, downloadVideo", "err", err)
 		}
@@ -367,7 +367,7 @@ func downloadVideo(bot *tgbotapi.BotAPI, update tgbotapi.Update, rdsRepo *redisR
 
 	tasks <- task
 	msg := tgbotapi.NewMessage(task.ChatID, "Downloading...")
-    _, err := bot.Send(msg)
+	_, err := bot.Send(msg)
 	if err != nil {
 		log.Info("Unable to send message, downloadVideo", "err", err)
 	}
